@@ -1,1 +1,53 @@
-this is spring xd
+Back ground:
+============
+
+Install and setup soringXD in distributed fashion.. we planned to setup in five machines..
+
+in which one is admin machine, from which will operate all remaining 4 machines..
+
+
+Components required:
+====================
+SpringXD 1.2.0 RELEASE
+ZooKeeper
+redis
+activemq
+mysql
+ 
+Steps:
+=======
+
+Step 1: First setup zookeeper in four machines..
+
+Step 2: download springxd software in admin machine..
+
+Step 3: Edit servers.yml file ( edit below properties )
+          trasport bus : redis
+          ( Select redis and give IP where redis is runnin )
+          ( Select database as mysql and give ip and hostname where mysql is running )
+          ( Provide zooKeeper details like ip and port, where zookeeper is running )
+          
+  Step 4: copy this springxd software from admin machine to all other machines..
+  
+  Note: Before starting springxd, all dependent components should be up and running..
+  
+  Step 5: Then start admin services from any machine, so admin will get started..
+  
+  Step 5: Start containers in different boxes..
+  
+  Important Note:
+             when ever if we start something, it will get registered with zookeeper.. so if we start containers in different
+            machines , again those will register with zookeeper.. hence through zookeeper component.. admin will come to know
+            where is container running and containers will come to know where is admin running..
+            
+            
+             
+Conclusion: This way we can set up sprdingxd in distributed fashion.. servers.yml is key property file in which will mention 
+all machines details..
+
+Happy Learning.. -)
+
+
+            
+  
+          
