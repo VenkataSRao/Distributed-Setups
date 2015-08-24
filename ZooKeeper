@@ -1,1 +1,53 @@
-Zoo
+Background:
+================
+
+Setup zookeeper in distributed environment..
+
+Planned to install and setup zookeepr in 3 machines..
+
+from admin machine.. We will be installing zookeeper in other 3 machines..
+
+Steps:
+=======
+
+Step 1: Download zookeeper3.4.6 software in admin machine..
+
+Step 2: rename zoo_sample.cfg to zoo.cfg  in below path
+
+
+/path/to/intalled/location/zookeeper-3.4.6/conf
+
+Step 3: Edit zoo.cfg
+	clientport=4181
+	dataDir=/ur/wishlocation/
+	server.1=IP1:4888:5888
+	server.2=IP2:4888:5888
+	server.3=IP3:4888:5888
+	
+	  Note: we can add any number servers in server.4, server.5 etc.,
+
+Step 4:
+
+	Before starting zookeeper services create dataDir in the mentioned path
+
+Step 5: Start Serices in all machines
+	/Path/to/installed/location/zookeeper-3.4.6/bin/zkServer.sh start
+
+Step 6: To check whether zookeeper is running or not
+
+ps -ef | grep zookeeper
+
+	/Path/to/installed/location/zookeeper-3.4.6/bin/zkServer.sh status
+
+Step 7: To stop services
+
+	/Path/to/installed/location/zookeeper-3.4.6/bin/zkServer.sh stop
+
+
+Enjoy.. :-)
+
+Keep Learning .. :-)
+
+
+
+		
