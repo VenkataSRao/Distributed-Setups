@@ -1,1 +1,53 @@
-This i
+Back ground: 
+=============
+To install cassandra and opscenter in distributed cluster.
+
+Done this cluster setup from admin machine..
+
+Steps:
+=======
+
+Step 1: Download cassandra2.1.2 and opscenter 5.0.2 ( opscenter is for GUI )
+
+Step 2: Untar these two files
+
+Step 3: Edit cassandra.yaml file from below location
+
+/path/to/installed/location/dsc-cassandra-2.1.2/conf/cassandra.yaml
+
+Step 4: edit below properties in cassandra.yaml
+
+	cluster_name: 'U R CLUSTER NAME'
+	data_file_directories: 
+	- seeds: "hostname1,hostname2"
+
+Step 5: edit address.yaml file in below location
+
+/opt/igc_services/inhouse_setup/cassandra/opscenter-5.0.2/agent/conf/address.yaml
+
+change below properties
+	stomp_interface: "hostname2"
+
+Step 6: After changing conf files, copy these two cassandra and opscenter folders to all machines..
+
+then start services in all machines
+
+	
+Step 7: Start services in seeds first
+
+/path/to/installed/location/dsc-cassandra-2.1.2/bin/cassandra &
+
+/path/to/installed/location/opscenter-5.0.2/bin/opscenter &
+
+/path/to/installed/location/opscenter-5.0.2/agent/bin/datastax-agent &
+
+Here, am starting all cassandra, opscenter and agent
+
+
+Note: Cassandra and datastax-agent need to start on all machines, opscenter need to start on only one machine..
+
+** Please follow strict indentation in properties files..
+
+	
+
+
