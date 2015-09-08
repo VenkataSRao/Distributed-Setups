@@ -1,0 +1,23 @@
+To set-up hive 
+
+
+
+Step1: wget http://www.eu.apache.org/dist/hive/hive-1.2.1/apache-hive-1.2.1-bin.tar.gz
+
+Step2: tar xzf apache-hive-1.2.1-bin.tar.gz
+
+Step3: set hive_home path
+        export HIVE_HOME=/opt/hadoop/hive
+        export PATH=$HIVE_HOME/bin:$PATH
+        
+Step4: Start Hive services
+
+        hive ( from command line )
+        then hive shell can be seen
+        
+        hive>
+        
+        
+        
+        
+Keep Leanning.. .... .. :-)
