@@ -1,1 +1,120 @@
-install
+Steps to setup hadoop2.7.1
+
+
+Step1: wget http://www.apache.org/dyn/closer.cgi/hadoop/common/hadoop-2.7.1/hadoop-2.7.1.tar.gz
+
+Step2: tar zxvf hadoop-2.7.1.tar.gz
+
+Step3: mv hadoop-2.7.1 hadoop
+
+Step4:  Set paths
+    export HADOOP_HOME=/home/hadoop/hadoop
+    export HADOOP_INSTALL=$HADOOP_HOME
+    export HADOOP_MAPRED_HOME=$HADOOP_HOME
+    export HADOOP_COMMON_HOME=$HADOOP_HOME
+    export HADOOP_HDFS_HOME=$HADOOP_HOME
+    export YARN_HOME=$HADOOP_HOME
+    export PATH=$PATH:$HADOOP_HOME/sbin:$HADOOP_HOME/bin
+    
+  Step5: Edit configuraiton files in /etc/hadoop
+  
+  core-site.xml:
+  =============
+  
+  <configuration>
+<property>
+  <name>fs.default.name</name>
+    <value>hdfs://localhost:9000</value>
+</property>
+</configuration>
+
+hdfs-site.xml:
+==============
+
+<configuration>
+<property>
+ <name>dfs.replication</name>
+ <value>1</value>
+</property>
+
+<property>
+  <name>dfs.name.dir</name>
+    <value>file:///home/hadoop/hadoopdata/hdfs/namenode</value>
+</property>
+
+<property>
+  <name>dfs.data.dir</name>
+    <value>file:///home/hadoop/hadoopdata/hdfs/datanode</value>
+</property>
+</configuration>
+
+
+mapred-site.xml:
+===============
+
+<configuration>
+ <property>
+  <name>mapreduce.framework.name</name>
+   <value>yarn</value>
+ </property>
+</configuration>
+
+yarn-site.xml:
+==============
+
+<configuration>
+ <property>
+  <name>yarn.nodemanager.aux-services</name>
+    <value>mapreduce_shuffle</value>
+ </property>
+</configuration>
+
+
+Name node format: ( Need to do first in any machine )
+=================
+
+/path/to/hadoop-2.7.1/bin/hdfs namenode -format
+
+
+After namenode format is done.. then start services..
+
+Start Services:
+===============
+
+start-dfs.sh
+
+start-yarn.sh
+
+
+Testing:
+============
+
+After successful starting of hadoop services.. test name in browser
+
+http://IP:50070 ( name node )
+http://IP:8088 ( yarn )
+
+
+
+Stop Services:
+=============
+
+stop-yarn.sh
+
+stop-dfs.sh
+
+
+========
+
+Keep keep Learning.. :-)
+
+
+
+
+
+
+
+
+
+
+    
