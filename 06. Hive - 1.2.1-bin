@@ -10,7 +10,54 @@ Step3: set hive_home path
         export HIVE_HOME=/opt/hadoop/hive
         export PATH=$HIVE_HOME/bin:$PATH
         
-Step4: Start Hive services
+        
+Step 4: Edit Configuration files..
+
+        hive-site.xml (/path/to/intall/hive/apache-hive-1.2.1-bin/conf/ hive-site.xml)
+        
+        <property>
+                <name>ambari.hive.db.schema.name</name>
+                <value>hive</value>
+        </property>
+
+
+<property>
+      <name>hive.cluster.delegation.token.store.zookeeper.connectString</name>
+      <value>IP1:4181,IP2:4181,IP3:4181</value>
+  </property>
+
+
+        <property>
+                <name>hive.zookeeper.quorum</name>
+                <value>IP1:4181,IP2:4181,IP3:4181</value>
+         </property>
+
+
+<property>
+      <name>javax.jdo.option.ConnectionDriverName</name>
+      <value>com.mysql.jdbc.Driver</value>
+    </property>
+
+<property>
+      <name>javax.jdo.option.ConnectionPassword</name>
+      <value>root</value>
+    </property>
+
+
+<property>
+      <name>javax.jdo.option.ConnectionURL</name>
+      <value>jdbc:mysql://IP/mysql/instal:3306/hive?createDatabaseIfNotExist=true</value>
+    </property>
+
+
+<property>
+      <name>javax.jdo.option.ConnectionUserName</name>
+      <value>root</value>
+    </property>
+
+        
+        
+Step5: Start Hive services
 
         hive ( from command line )
         then hive shell can be seen
