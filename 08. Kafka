@@ -3,6 +3,10 @@ Background:
 
 Setting up kafka in distributed environment.. taking kafka 0.8.2.1 binary with scala 2.10.0 support
 
+PreRequisites:
+Zookeeper should be up and running for kafka.
+
+
 Steps:
 
 Step1:
@@ -12,5 +16,35 @@ Step2:
 tar -zxvf kafka_2.10-0.8.2.1.tgz
 
 Step3:
+Edit server.properties file in below location
+/path/to/installed_location/kafka/kafka_2.10-0.8.2.1/config/server.properties
+
+broker.id=1
+log.dirs=/opt/igc_services/runtime/kafka/logs
+log.retention.hours=24
+
+zookeeper.connect=IP1:4181,IP2:4181,IP3:4181
+
+Note: In this case, Zookeeper is distributed and we used port as 4181
+
+Step4:
+
+Copy this kafka to all your cluster machines..
+
+in second machine, broker.id=2
+in third machine, broker.id=3
+like this we need to set this broker.id number
+
+Step4:
+
+Start servevies
+
+/bin/kafka-server-start.sh /path/to/installed_location/kafka/kafka_2.10-0.8.2.1/config/server.properties &
+
+Step5:
+
+Stop services
+
+pkill -f server.properties
 
 
