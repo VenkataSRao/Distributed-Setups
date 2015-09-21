@@ -1,1 +1,147 @@
-Oozie setup is little bit tricky and not usual as others
+Backgrond:
+==========
+Setting up oozie in distributed environment.. version used are
+
+oozie-4.1.0
+hadoop-2.7.1
+hive- 1.2.1
+pig-0.15.0
+
+Setup Steps:
+============
+
+step1:
+=======
+wget http://archive.apache.org/dist/oozie/4.1.0/oozie-4.1.0.tar.gz
+
+Step2:
+=======
+tar -zxvf oozie-4.1.0.tar.gz
+
+Step3:
+=======
+chown -R root:root oozie-4.1.0
+
+Step4:
+======
+/installed/location/oozie-4.1.0/bin
+
+Step5:
+======
+./mkdistro.sh -DskipTests
+
+Step6:
+=======
+copy hadooplibs to oozie libext
+
+cp /opt/igc_services/client_setup/oozie-4.1.0/hadooplibs/target/oozie-4.1.0-hadooplibs.tar.gz /opt/igc_services/client_setup/
+oozie-4.1.0/libext/
+
+Step7:
+======
+prepare war
+
+cd /opt/igc_services/client_setup/oozie-4.1.0/distro/target/oozie-4.1.0-distro/oozie-4.1.0
+bin/oozie-setup.sh prepare-war
+
+bin/oozie-setup.sh sharelib create -fs hdfs://altiux.hadoop.namenode:8020 
+
+bin/oozie-setup.sh sharelib upgrade -fs hdfs://altiux.hadoop.namenode:8020
+
+bin/ooziedb.sh create -sqlfile oozie.sql -run
+
+bin/ooziedb.sh upgrade -sqlfile oozie.sql -run
+
+hadoop distcp hdfs://172.16.0.182:8020/user/root/share/lib/lib_20150914155507  hdfs://172.16.0.182:8020/user/oozie/share/lib/
+
+hadoop distcp hdfs://172.16.0.182:8020/user/oozie/share/lib/lib_20150914155507  hdfs://172.16.0.182:8020/user/root/share/lib
+
+hdfs dfs -mkdir /user/root/piggybank
+hdfs dfs -put /opt/igc_services/inhouse_setup/hadoop/pig/pig-0.15.0/lib/piggybank.jar /user/root/piggybank/
+
+
+Step8:
+======
+Start Oozie services
+bin/oozied.sh start
+
+Step9:
+======
+Check oozie status
+
+bin/oozie admin -oozie http://localhost:11000/oozie -status
+
+==============================================================================================
+
+
+some ref outputs on screen
+
+
+[root@altiux oozie-4.1.0]# ./bin/ooziedb.sh create -sqlfile oozie.sql -run
+  setting CATALINA_OPTS="$CATALINA_OPTS -Xmx1024m"
+
+Validate DB Connection
+DONE
+Check DB schema does not exist
+DONE
+Check OOZIE_SYS table does not exist
+DONE
+Create SQL schema
+DONE
+Create OOZIE_SYS table
+DONE
+
+Oozie DB has been created for Oozie version '4.1.0'
+
+
+The SQL commands have been written to: oozie.sql
+
+
+bin/oozie-setup.sh prepare-war [-d directory] [-secure]
+                     sharelib create -fs <FS_URI> [-locallib <PATH>]
+                     sharelib upgrade -fs <FS_URI> [-locallib <PATH>]
+                     db create|upgrade|postupgrade -run [-sqlfile <FILE>]
+
+[root@altiux oozie-4.1.0]# bin/oozie-setup.sh sharelib create -fs hdfs://altiux.hadoop.namenode:8020 
+  setting CATALINA_OPTS="$CATALINA_OPTS -Xmx1024m"
+log4j:WARN No appenders could be found for logger (org.apache.hadoop.util.Shell).
+log4j:WARN Please initialize the log4j system properly.
+log4j:WARN See http://logging.apache.org/log4j/1.2/faq.html#noconfig for more info.
+SLF4J: Class path contains multiple SLF4J bindings.
+SLF4J: Found binding in [jar:file:/opt/igc_services/client_setup/oozie-4.1.0/distro/target/oozie-4.1.0-distro/oozie-4.1.0/libtools/slf4j-log4j12-1.6.6.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/igc_services/client_setup/oozie-4.1.0/distro/target/oozie-4.1.0-distro/oozie-4.1.0/libtools/slf4j-simple-1.6.6.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: Found binding in [jar:file:/opt/igc_services/client_setup/oozie-4.1.0/distro/target/oozie-4.1.0-distro/oozie-4.1.0/libext/slf4j-log4j12-1.6.6.jar!/org/slf4j/impl/StaticLoggerBinder.class]
+SLF4J: See http://www.slf4j.org/codes.html#multiple_bindings for an explanation.
+SLF4J: Actual binding is of type [org.slf4j.impl.Log4jLoggerFactory]
+the destination path for sharelib is: /user/root/share/lib/lib_20150914155507
+
+
+
+$ bin/mkdistro.sh [-DskipTests]Running =mkdistro.sh= will create the binary distribution of Oozie. By default, oozie war will not contain hadoop and
+hcatalog libraries, however they are required for oozie to work. There are 2 options to add these libraries:
+1. At install time, copy the hadoop and hcatalog libraries to libext and run oozie-setup.sh to setup oozie war. This is
+suitable when same oozie package needs to be used in multiple set-ups with different hadoop/hcatalog versions.
+2. Build with -Puber which will bundle the required libraries in the oozie war. Further, the following options are
+available to customise the versions of the dependencies:
+-P<profile> - default hadoop-1. Valid are hadoop-1, hadoop-0.23, hadoop-2 or hadoop-3. Choose the correct hadoop
+profile depending on the hadoop version used.
+-Dhadoop.version=<version> - default 1.2.1 for hadoop-1, 0.23.5 for hadoop-0.23, 2.3.0 for hadoop-2 and 3.0.0-SNAPSHOT
+    for hadoop-3
+-Dhadoop.auth.version=<version> - defaults to hadoop version
+-Ddistcp.version=<version> - defaults to hadoop version
+-Dpig.version=<version> - default 0.12.1
+-Dpig.classifier=<classifier> - default none
+-Dsqoop.version=<version> - default 1.4.3
+-Dsqoop.classifier=<classifier> - default hadoop100
+-Dtomcat.version=<version> - default 6.0.41
+-Dopenjpa.version=<version> - default 2.2.2
+-Dxerces.version=<version> - default 2.10.0
+-Dcurator.version=<version> - default 2.5.0
+-Dhive.version=<version> - default 0.13.1
+-Dhbase.version=<version> - default 0.94.2
+
+
+
+
+
+
