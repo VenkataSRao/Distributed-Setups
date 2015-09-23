@@ -52,6 +52,10 @@ Login to any of the boxes and start using mongo
 
 also login to web and check whether howmnay nodes are healthy
 
+
+http://primary_IP:28017/ ( if you are using default mongo port 27017)
+http://primary_IP:28019/ ( If you are using other than default port )
+
 Step5:
 ======
 Stop services
