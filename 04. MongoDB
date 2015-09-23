@@ -1,1 +1,96 @@
-install
+Background:
+===========
+Install mongodb in clustered environment..
+
+mongodb version - mongodb-linux-x86_64-3.0.6
+
+Steps to setup:
+
+
+Step1:
+=====
+wget https://fastdl.mongodb.org/linux/mongodb-linux-x86_64-3.0.6.tgz 
+
+tar -zxvf mongodb-linux-x86_64-3.0.6.tgz
+
+Step2:
+======
+edit mongod.conf file below properties..
+logpath=/path/to/mongo/log
+port=27019
+dbpath=/path/to/mongo/data
+nojournal=true
+httpinterface=true ( If you want web to be enabled..)
+replSet=my_mongo_dev ( Most importnat.. because all other nodes will join with this property)
+
+Copy this mongod.conf file to all instance of mongo ( Suppose if we are installing in 5 machines, need to copy this conf
+file in 5 machines )
+
+Step3:
+======
+Start Services
+
+mongod --dbpath /path/to/mongo/data --config /path/to/location/mongo/mongodb-linux-x86_64-3.0.6/conf/mongod.conf &"
+
+Need to start services on all boxes ( Here we took 5 boxes )
+
+
+Step4:
+=======
+go into one of the box ( be in mongo shell )
+
+rs.initiate();
+rs.add("hostname1:27019")
+rs.add("hostname2:27019")
+rs.add("hostname3:27019")
+rs.add("hostname4:27019")
+
+Step4:
+======
+Within 5 machines one will be primary and others will be seondary machines..
+Login to any of the boxes and start using mongo
+
+also login to web and check whether howmnay nodes are healthy
+
+Step5:
+======
+Stop services
+
+pkill -f mongod
+
+It will kills mongo
+
+
+Important Note: ( Observation)
+==============================
+
+1. From primary node only user can write data to mongo
+2. From primary node only user can add or remove nodes
+3. Fron secondary, user can read data only.. and can not write
+4. every time user logs into secondary node, user has to say
+    rs.slaveOk ( this command will allow to fetch data from master, this is active till session is live.. if user exists 
+                  session and logins then again use has to say SlaveOK)
+                  
+                  
+                  
+
+That's It... ! Mongo cluster is ready.. :-)
+
+============================================
+                  
+
+
+Happy Learning.. Keep Learn.... :-)
+
+
+
+
+
+
+
+
+
+
+
+
+
