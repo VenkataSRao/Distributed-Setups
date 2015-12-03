@@ -1,1 +1,6 @@
-Pig Intro
+Pig version - pig-0.15.0
+
+pig.properties in below location 
+/location/of/pig/pig-0.15.0/conf/pig.properties
+
+exectype=mapreduce
